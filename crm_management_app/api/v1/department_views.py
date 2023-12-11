@@ -20,8 +20,8 @@ def department_api(request, id=0):
         departments_serializer = DepartmentSerializer(data=department_data)
         if departments_serializer.is_valid():
             departments_serializer.save()
-            return JsonResponse("Added Successfully", status=status.HTTP_201_CREATED)
-        return JsonResponse("Failed to add", status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message": "Added Successfully"}, status=status.HTTP_201_CREATED, safe=False)
+        return JsonResponse({"error": "Failed to add"}, status=status.HTTP_400_BAD_REQUEST, safe=False)
 
     # PUT request to update an existing department
     elif request.method == 'PUT':
@@ -30,21 +30,21 @@ def department_api(request, id=0):
             department = Departments.objects.get(
                 DepartmentId=department_data['DepartmentId'])
         except Departments.DoesNotExist:
-            return JsonResponse("Department not found", status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"error": "Department not found"}, status=status.HTTP_404_NOT_FOUND, safe=False)
 
         departments_serializer = DepartmentSerializer(
             department, data=department_data)
         if departments_serializer.is_valid():
             departments_serializer.save()
-            return JsonResponse("Update Successfully")
-        return JsonResponse("Failed to update", status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"message": "Update Successfully"}, safe=False)
+        return JsonResponse({"error": "Failed to update"}, status=status.HTTP_400_BAD_REQUEST, safe=False)
 
     # DELETE request to delete an existing department
     elif request.method == 'DELETE':
         try:
             department = Departments.objects.get(DepartmentId=id)
         except Departments.DoesNotExist:
-            return JsonResponse("Department not found", status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({"error": "Department not found"}, status=status.HTTP_404_NOT_FOUND, safe=False)
 
         department.delete()
-        return JsonResponse("Deleted Successfully", status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({"message": "Deleted Successfully"}, status=status.HTTP_204_NO_CONTENT, safe=False)
