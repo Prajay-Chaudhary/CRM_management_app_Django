@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from crm_management_app.models import Departments
-from crm_management_app.serializers import DepartmentSerializer
+from crm_management_app.serializers.department_serializer import DepartmentSerializer
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
